@@ -1,0 +1,110 @@
+<?php
+    $this->display("public/header.phtml", array(
+        'title'=>'联图二维码用户系统',
+        'addStyle' => array('login/index.css')
+    ));
+?>
+<div class="container">
+    <div class="mod-form">
+        <div class="slogan">
+            <h1>
+                <a href="http://www.liantu.com/">
+                    <img src="<?php echo $imageUrl;?>public/logo.png" alt="联图二维码" height="40"/>
+                </a>
+            </h1>
+            <p>专业化二维码营销一站式解决方案</p>
+        </div>
+        <div class="hd">
+            <ul>
+                <li><a href="#login" rel="nofollow">登录</a></li>
+                <li><a href="#reg" rel="nofollow">注册</a></li>
+            </ul>
+            <div class="line"></div>
+        </div>
+        <div class="bd">
+            <div class="tip"></div>
+            <div class="group">
+                <form name="login" action="/login/i/">
+                    <div class="form-group input-list">
+                        <div class="input-wrapper">
+                            <input class="form-control" type="text" name="username" value="" placeholder="手机号" autocomplete="off" maxlength="11" tabindex="1" autofocus>
+                        </div>
+                        <div class="input-wrapper">
+                            <input class="form-control" type="password" name="password" value="" placeholder="密码" autocomplete="off" tabindex="2">
+                        </div>
+                        <?php if($this->using_captcha):?>
+                            <div class="input-wrapper">
+                                <input class="form-control" type="number" name="captcha" value="" placeholder="验证码" autocomplete="off" maxlength="4" tabindex="3" autocomplete="off">
+                                <a href="javascript:;" class="captcha"><img src="/i/captcha/?channel=login" alt="图片验证码" title="更换验证码" width="100" height="40"></a>
+                            </div>
+                        <?php endif;?>
+                    </div>
+                    <div class="form-group clearfix">
+                        <div class="checkbox">
+                            <div class="pull-right">
+                                <a href="/passwd/">忘记密码？</a>
+                            </div>
+                            <label for="remember">
+                                <input id="remember" type="checkbox" name="isremember" value="1"/>
+                                <span>记住密码</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+                    </div>
+                </form>
+            </div>
+            <div class="group">
+                <form name="reg" action="/reg/doreg/">
+                    <div class="form-group input-list">
+                        <div class="input-wrapper">
+                            <input class="form-control" type="text" name="mobile" value="" placeholder="手机号" autocomplete="off" maxlength="11" tabindex="1" autofocus>
+                        </div>
+                        <div class="input-wrapper">
+                            <input class="form-control" type="number" name="captcha" value="" placeholder="验证码" autocomplete="off" maxlength="4" tabindex="2" autocomplete="off">
+                            <a href="javascript:;" class="captcha"><img src="/i/captcha/?channel=sms" alt="图片验证码" title="更换验证码" width="100" height="40"></a>
+                        </div>
+                        <div class="input-wrapper">
+                            <input class="form-control" type="number" name="code" value="" placeholder="短信验证码" autocomplete="off" maxlength="4" tabindex="3" autocomplete="off">
+                            <a href="javascript:;" class="getcode">获取验证码</a>
+                        </div>
+                        <div class="input-wrapper">
+                            <input class="form-control" type="password" name="password" value="" placeholder="密码" autocomplete="off" tabindex="5">
+                        </div>
+                        <div class="input-wrapper">
+                            <input class="form-control" type="text" name="email" value="" placeholder="电子邮箱" autocomplete="off" tabindex="4" autofocus>
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <div class="checkbox">
+                            <label for="read">
+                                <input id="read" type="checkbox" name="read"/>
+                                <span>我已阅读<a href="/">《联图二维码用户协议》</a></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="mod-foot">
+        <p>
+            <a href="http://www.miitbeian.gov.cn/" target="_blank" rel="nofollow">粤ICP备11063993号-2</a>
+            <span>&copy;<?php echo date('Y');?> liantu.com, All Rights Reserved stat </span>
+        </p>
+    </div>
+</div>
+<div class="page-bg">
+    <canvas id="bgCanvas"></canvas>
+</div>
+<?php
+    $this->display("public/footer.phtml", array(
+        'addScript' => array('login/common.js','login/index.js')
+    ));
+?>

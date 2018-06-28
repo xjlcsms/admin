@@ -1,0 +1,14 @@
+[common]
+;  MySQL主业务数据库
+resources.database.multi.default.driver   = "pdo_mysql"
+resources.database.multi.default.database = "sms_chuangrui"
+resources.database.multi.default.username = "root"
+resources.database.multi.default.password = "root"
+resources.database.multi.default.hostname = "127.0.0.1"
+resources.database.multi.default.port     = 3306
+resources.database.multi.default.charset  = "UTF8"
+resources.database.multi.default.driver_options.1002 = "SET NAMES utf8"
+
+[product : common]
+[develop : product]
+;  MySQL主业务数据库

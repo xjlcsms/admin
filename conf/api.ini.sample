@@ -1,0 +1,6 @@
+[common]
+;基本资源路径
+
+[product : common]
+
+[develop : product]

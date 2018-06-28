@@ -1,0 +1,11 @@
+[common]
+pay.sinapay.version = '1.0'
+pay.sinapay.partner = '200004595271'
+pay.sinapay.key = '1234567890qwertyuiopasdfghjklzxc'
+pay.sinapay.ssl_key_dir = APPLICATION'/library/Ku/Pay/Sinapay/key/';
+pay.sinapay.mas_url = 'https://testgate.pay.sina.com.cn/mas/gateway.do'
+pay.sinapay.mgs_url = 'https://testgate.pay.sina.com.cn/mgs/gateway.do'
+
+[product : common]
+[develop : product]
+

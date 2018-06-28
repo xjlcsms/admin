@@ -1,0 +1,7 @@
+conf/*.ini
+/nbproject/*
+.idea/*
+public/uploads
+key/*
+data/log/*
+data/logs/*

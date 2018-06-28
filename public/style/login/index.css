@@ -1,0 +1,217 @@
+body{
+	background-color: #f7fafc;
+    overflow: hidden;
+}
+.container{
+    height: 100%;
+    min-height: 640px;
+}
+.page-bg{
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+}
+.footer{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.mod-foot{
+    padding: 6px 0;
+    line-height: 24px;
+    text-align: center;
+    color: #666;
+}
+.mod-foot a{
+    color: #666;
+}
+
+.mod-form{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+	max-width: 330px;
+    height: 560px;
+    padding: 15px 0;
+    margin-top: -280px;
+    margin-left: -165px;
+}
+.mod-form .slogan{
+    margin-bottom: 24px;
+    text-align: center;
+}
+.mod-form .slogan p{
+    margin: 15px 0;
+    font-size: 18px;
+    color: #666;
+}
+.mod-form .hd{
+    position: relative;
+    width: 144px;
+    height: 36px;
+    margin: 0 auto 20px;
+}
+.mod-form .hd h3{
+    position: relative;
+    line-height: 32px;
+    text-align: center;
+    font-size: 18px;
+}
+.mod-form .hd h3:before,.mod-form .hd h3:after{
+    position: absolute;
+    top: 16px;
+    display: block;
+    content: '';
+    width: 30px;
+    height: 0;
+    border-bottom: 1px solid #dbdbdb;
+}
+.mod-form .hd h3:before{
+    left: -10px;
+}
+.mod-form .hd h3:after{
+    right: -10px;
+}
+.mod-form .hd ul{
+    padding: 0;
+    overflow: hidden;
+}
+.mod-form .hd li{
+    width: 50%;
+    float: left;
+    line-height: 32px;
+    text-align: center;
+    font-size: 18px;
+}
+.mod-form .hd li.active a{
+    color: #337ab7;
+}
+.mod-form .hd a{
+    display: block;
+    text-decoration: none;
+    color: #555;
+}
+.mod-form .hd .line{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40%;
+    height: 2px;
+    margin: 0 5%;
+    background: #0f88eb;
+    -webkit-transition: left .15s ease-in;
+    transition: left .15s ease-in;
+}
+.mod-form .bd{
+    position: relative;
+}
+.mod-form .bd .tip{
+    display: none;
+    position: absolute;
+    left: 0;
+    top: -50px;
+    width: 100%;
+    line-height: 36px;
+    text-align: center;
+}
+.mod-form .bd .group{
+    display: none;
+}
+.mod-form .bd .active{
+    display: block;
+}
+.mod-form .form-control {
+    height: auto;
+    padding: 12px;
+    font-size: 16px;
+}
+.mod-form .input-list{
+    padding: 1px 0;
+    border: 1px solid #d5d5d5;
+    border-radius: 3px;
+    background: #fff;
+}
+.mod-form .input-list .form-control{
+    border: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.mod-form .input-wrapper{
+    position: relative;
+    border-top: 1px solid #e8e8e8;
+    margin: 0;
+    overflow: hidden;
+}
+.mod-form .input-wrapper a{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.mod-form .input-wrapper img{
+    margin-top: 3px;
+}
+.mod-form .input-list .input-wrapper:first-child{
+    border-top: none;
+}
+.mod-form .getcode{
+    display: block;
+    width: 100px;
+    height: 46px;
+    border-left: 1px solid #e8e8e8;
+    background: #f6f6f6;
+    line-height: 46px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+    outline: none;
+    border-radius: 2px;
+}
+.mod-form .checkbox{
+    position: static;
+}
+.mod-form  label.error {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    line-height: 48px;
+    text-indent: 8px;
+    font-weight: normal;
+    color: #c33;
+    cursor: text;
+    background: -webkit-linear-gradient(left,rgba(255,255,255,0),#fff 8px);
+    background: linear-gradient(to right,rgba(255,255,255,0),#fff 8px);
+    visibility: hidden;
+    opacity: 0;
+    -ms-filter: "alpha(Opacity=0)";
+    -webkit-transform: translate(-20px,0);
+    -ms-transform: translate(-20px,0);
+    transform: translate(-20px,0);
+    -webkit-transition: .25s ease-out;
+    transition: .25s ease-out;
+}
+.mod-form label.error.is-visible {
+    visibility: visible;
+    opacity: 1;
+    -ms-filter: "alpha(Opacity=100)";
+    -webkit-transform: translate(0,0);
+    -ms-transform: translate(0,0);
+    transform: translate(0,0);
+}
+
+@media (max-width: 480px){
+    .mod-foot a,.mod-foot span{
+        display: block;
+    }
+    .mod-form{
+        position: static;
+        margin: 0 auto;
+    }
+}

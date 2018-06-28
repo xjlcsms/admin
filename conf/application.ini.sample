@@ -1,0 +1,35 @@
+[common]
+;; Yaf配置
+;  支持直接写PHP中的已定义常量, Windows 平台需要注意目录分割符的问题
+application.directory = APPLICATION_PATH "/application/"
+;application.dispatcher.catchException = 1
+application.view.ext = "phtml"
+application.layout.directory = APPLICATION_PATH "/application/views/layouts"
+application.modules = "Index"
+;路由配置文件
+routes = APPLICATION_PATH "/conf/route.ini"
+
+;redis配置
+resources.redis.host = '127.0.0.1'
+resources.redis.port = '6379'
+resources.redis.auth = ''
+resources.redis.db   = 5
+resources.redis.options.prefix = 'xjlc'
+
+
+; 这里重置只是无奈之举, 线上环境建议直接在系统上配置.
+phpSettings.mbstring.internal_encoding      = "utf-8"
+phpSettings.session.save_handler            = "redis"
+phpSettings.session.save_path               = "tcp://127.0.0.1:6379?timeout=10&database=9&auth="
+phpSettings.session.cookie_domain           = ".xjlc.com"
+phpSettings.session.session.cookie_httponly = 1
+
+
+
+;resources.sms.xuanwu.account = 'jkw@xmliantu'
+;resources.sms.xuanwu.password = 'KdD36teq'
+;resources.sms.xuanwu.subid = ''
+;resources.sms.xuanwu.msgtype = 1
+[product:common]
+
+[develop:product]

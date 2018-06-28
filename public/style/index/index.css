@@ -1,0 +1,16 @@
+.mod-notice ul{
+	overflow: hidden;
+}
+.mod-notice li{
+	position: relative;
+	bottom: -1px;
+	line-height: 42px;
+	border-bottom: 1px solid #eee;
+}
+.mod-notice li span{
+	float: right;
+}
+.mod-notice li a{
+	display: block;
+	margin-right: 100px;
+}

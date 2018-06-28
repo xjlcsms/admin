@@ -1,0 +1,6 @@
+
+;短网址跳转
+routes.code.type = "regex"
+routes.code.match = "#^/qixi/$#"
+routes.code.route.controller = "activeday"
+routes.code.route.action = "qixi"

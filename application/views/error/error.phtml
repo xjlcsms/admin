@@ -1,0 +1,18 @@
+<?php 
+	$this->display('elements/header.phtml', array(
+    	'title' => '404错误 - 监控网',
+    	'addStyle' => array('user/error/index.css')
+	));
+?>
+<div class="container">
+	<div class="mod-error">
+		<img src="<?php echo $imageUrl; ?>error/defaults.jpg" alt="">
+		<p class="msg"><?php echo $this->msg?$this->msg:'对不起，该页面无法显示！！！';?></p>
+		<p><span id="time" class="count">5</span>秒后将<a href="/" class="back">返回</a></p>
+	</div>
+</div>
+<?php
+    $this->display("elements/footer.phtml", array(
+        'modules' => array('user/error/index.js'),
+    ));
+?>
