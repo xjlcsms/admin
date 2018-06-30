@@ -5,3 +5,4 @@ public/uploads
 key/*
 data/log/*
 data/logs/*
+sh/*.sh
