@@ -4,6 +4,7 @@ class IndexController extends \Base\ApplicationController
 {
     public function indexAction()
     {
-       return $this->returnData('test');
+//        var_dump(\Ku\Tool::encryption('abc123'));
+       return false;
     }
 }

@@ -299,7 +299,7 @@ class LoginModel  extends \Business\AbstractModel{
      *
      * @return int
      */
-    private function _getMid() {
+    private function  _getMid() {
         return (int) (\Yaf\Session::getInstance()->get('mid'));
     }
 
