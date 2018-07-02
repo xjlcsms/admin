@@ -12,10 +12,14 @@ class AdminModel extends \Mapper\AbstractModel
 
     use \Base\Model\InstanceModel;
 
-    protected $modelClass = '\Admin';
+    protected $modelClass = '\AdminModel';
 
     protected $table = 'admin';
 
 
+    public function lastLogin(\AdminModel $adminModel){
+        $adminModel->setUpdated_at(date('Y-m-d H:i:s'));
+        $this->update($adminModel);
+    }
 
 }

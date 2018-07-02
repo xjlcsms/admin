@@ -5,7 +5,6 @@ namespace Base;
 class ApplicationController extends \Base\AbstractController {
 
     protected $_ec = array(
-        'index',
         'login',
         'passwd',
         'borrow',
@@ -14,7 +13,6 @@ class ApplicationController extends \Base\AbstractController {
         );
 
     protected $_ac = array(
-        'index'=>'*',
         'login'=>'*',
         'passwd'=>'find,index',
         'borrow'=>'*',
@@ -30,9 +28,9 @@ class ApplicationController extends \Base\AbstractController {
                     $this->returnData('登录过期，请重新登录', 504);
                 } else {
                     if (isset($_SERVER["HTTP_REFERER"])) {
-                        $this->redirect("/user/login?url=" . $_SERVER["HTTP_REFERER"]);
+                        $this->redirect("/login?url=" . $_SERVER["HTTP_REFERER"]);
                     } else {
-                        $this->redirect("/user/login");
+                        $this->redirect("/login");
                     }
                 }
                 exit();

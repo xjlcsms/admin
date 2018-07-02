@@ -31,8 +31,9 @@ class LoginModel  extends \Business\AbstractModel{
      *
      * @var int
      */
-    protected $_savetime = 2592000;
-    
+//    protected $_savetime = 2592000;
+    protected $_savetime = 604800;
+
     
     protected $_member = null;
 
@@ -49,7 +50,7 @@ class LoginModel  extends \Business\AbstractModel{
     }
 
     /**
-     * @return \Ku\Login
+     * @return LoginModel|null
      */
     public static function getInstance() {
         if (!self::$_instance instanceof self) {
@@ -94,22 +95,22 @@ class LoginModel  extends \Business\AbstractModel{
     public function getUsername() {
         $model = $this->getCurrentUser();
 
-        return (($model instanceof \MemberModel) ? $model->getUsername() : null);
+        return (($model instanceof \AdminModel) ? $model->getUsername() : null);
     }
     
 
     /**
      * 当前登录用户
      *
-     * @return \MemberModel|null
+     * @return \AdminModel|null
      */
     public function getCurrentUser() {
-        $mid = $this->_getMid();
+        $mid = $this->getMid();
         if ($mid <= 0) {
             return null;
         }
         if($this->_member === null){
-            $this->_member = \Mapper\MemberModel::getInstance()->findById($mid);
+            $this->_member = \Mapper\AdminModel::getInstance()->findById($mid);
         }
         return $this->_member;
     } 
@@ -127,22 +128,15 @@ class LoginModel  extends \Business\AbstractModel{
             return $this->getMsg(23201, false);
         }
 
-        if (\Ku\Verify::isMobile($username) === false) {
-            return $this->getMsg(23202, false);
-        }
+        $memberMapper = \Mapper\AdminModel::getInstance();
+        $memberModel = $memberMapper->findByUsername($username);
 
-        $memberMapper = \Mapper\MemberModel::getInstance();
-        $memberModel = $memberMapper->findByMobile($username);
-
-        if (!$memberModel instanceof \MemberModel || \Ku\Tool::valid($password, $memberModel->getPassword(), $secure) === false) {
+        if (!$memberModel instanceof \AdminModel || \Ku\Tool::valid($password, $memberModel->getPassword(), $secure) === false) {
             return $this->getMsg(23203, false);
         }
 
-        $lastTime = $memberModel->getLast_time();
+        $lastTime = $memberModel->getUpdated_at();
 
-        if ($memberModel->getDisabled() === 1) {
-            return $this->getMsg(23204, false);
-        }
         $memberMapper->lastLogin($memberModel);
         $this->setLogin($memberModel->getId(), array(\Ku\Consts::LAST_LOGIN_TIME => $lastTime));
         $this->_member = $memberModel;
@@ -175,7 +169,7 @@ class LoginModel  extends \Business\AbstractModel{
     public function rememberLogin($remember) {
         if($remember){
              $userModel = $this->getCurrentUser();
-          if ($userModel instanceof \MemberModel) {
+          if ($userModel instanceof \AdminModel) {
             $data = array();
             $time = microtime(true);
             $rand = mt_rand(0, 16);
@@ -218,10 +212,10 @@ class LoginModel  extends \Business\AbstractModel{
             return false;
         }
 
-        $mapper = \Mapper\MemberModel::getInstance();
+        $mapper = \Mapper\AdminModel::getInstance();
         $model = $mapper->findById($memberId);
 
-        if ($model instanceof \MemberModel) {
+        if ($model instanceof \AdminModel) {
 
             $ult = (isset($data['ult'])) ? (int) $data['ult'] : 0;
             $urt = (isset($data['urt'])) ? (int) $data['urt'] : 0;
@@ -232,8 +226,7 @@ class LoginModel  extends \Business\AbstractModel{
 
             if (strcmp($una, sha1($model->getUsername())) === 0 &&
                     strcmp(sha1($rstr . ':' . $ua), $urs) === 0 &&
-                    $this->_savetime > (time() - $ult) &&
-                    $model->getDisabled() === 0
+                    $this->_savetime > (time() - $ult)
             ) {
                 $this->setLogin($model->getId(), array());
                 $this->_isRemberLogin = true;
@@ -308,67 +301,36 @@ class LoginModel  extends \Business\AbstractModel{
      *
      * 注册流程
      */
-    public function regFlow($mobile,$password,$email,$code){
-
-        if (\Ku\Verify::isMobile($mobile) === false) {
-            return $this->getMsg(23210,false);
-        }
-        if(strlen($password)<6){
-            return $this->getMsg(23212,false);
-        }
-        $memberMapper = \Mapper\MemberModel::getInstance();
-        $model = $memberMapper->findByMobile($mobile);
-        if ($model instanceof \MemberModel) {
-            return $this->getMsg(23213,false);
-        }
-
-        if (\Ku\Sender\Compare::sms($mobile, 'reg', $code) === false) {
-            return $this->getMsg(23214,false);
-        }
-        return true;
-
-    }
+//    public function regFlow($mobile,$password,$email,$code){
+//
+//        if (\Ku\Verify::isMobile($mobile) === false) {
+//            return $this->getMsg(23210,false);
+//        }
+//        if(strlen($password)<6){
+//            return $this->getMsg(23212,false);
+//        }
+//        $memberMapper = \Mapper\MemberModel::getInstance();
+//        $model = $memberMapper->findByMobile($mobile);
+//        if ($model instanceof \MemberModel) {
+//            return $this->getMsg(23213,false);
+//        }
+//
+//        if (\Ku\Sender\Compare::sms($mobile, 'reg', $code) === false) {
+//            return $this->getMsg(23214,false);
+//        }
+//        return true;
+//
+//    }
 
 
     public function getLoginUser(){
-
-        $session = \Yaf\Session::getInstance();
-        $info  = $session->get('userinfo');
-        if($info){
-            return $info;
-        }else{
-            $info = $this->checkOldLogin();
-            if($info === false){
-                return null;
-            }
-        }
-        
-        return $info;
-    }
-
-
-    public function checkOldLogin(){
-        $userCookie = isset($_COOKIE['sfq_session'])?$_COOKIE['sfq_session']:0;
-        if(empty($userCookie)){
-            return false;
-        }
-        $cookieArray = unserialize($userCookie);
-        $ip = \Ku\Tool::getClientIp();
-        if($cookieArray['ip_address']!= $ip){
-            return false;
-        }
-        if(\Ku\Tool::getClientUa() != $cookieArray['user_agent']){
-            return false;
-        }
-        $mapper = \Mapper\SfqsessionModel::getInstance();
-        $user = $mapper->findBySession_id($cookieArray['session_id']);
-        if($user instanceof \SfqsessionModel){
+        if(empty($this->_member)){
             $session = \Yaf\Session::getInstance();
-            $info = unserialize($user->getUser_data());
-            $cookieArray['user'] = $info;
-            $session->set('userinfo',$cookieArray);
-            return $cookieArray;
+            $id =  $session->get('mid');
+            $this->_member = \Mapper\AdminModel::getInstance()->findById($id);
+            return $this->_member;
         }
-        return false;
+        return $this->_member;
     }
+
 }

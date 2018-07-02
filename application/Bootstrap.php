@@ -90,7 +90,7 @@ class Bootstrap extends Bootstrap_Abstract {
      * 注册本地类
      */
     public function _initRegisterLocalNamespace() {
-        Loader::getInstance()->registerLocalNamespace(array('Zend', 'Ku'));
+        Loader::getInstance()->registerLocalNamespace(array('Zend', 'Ku','Cron'));
     }
 
     /**
