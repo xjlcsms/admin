@@ -69,7 +69,7 @@ class UserController extends \Base\ApplicationController
         $select->order(array('created_at desc'));
         $page = $this->getParam('page', 1, 'int');
         $pagelimit = $this->getParam('pagelimit', 15, 'int');
-        $pager = new \Ku\Page($select, $page, $pagelimit, $mapper->getAdapter());var_dump($pager->getList());die();
+        $pager = new \Ku\Page($select, $page, $pagelimit, $mapper->getAdapter());
         $this->assign('pager', $pager);
         $this->assign('userid',$userid);
         $this->assign('acount',$acount);
