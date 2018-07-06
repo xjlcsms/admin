@@ -138,6 +138,7 @@ class UserController extends \Base\ApplicationController
             'marketing_balance'=>'marketing_balance+'.$recharge,
             'show_normal_balance'=>'show_normal_balance+'.$recharge,
             'show_marketing_balance'=>'show_marketing_balance+'.$recharge,
+            'updated_at'=>date('Y-m-d H:i:s'),
             );
         $where = array('id'=>$userid);
         $res = $mapper->update($update,$where);
@@ -147,5 +148,52 @@ class UserController extends \Base\ApplicationController
         return $this->returnData('充值成功',21009,true);
     }
 
+    /**
+     * 回退
+     * @return false
+     */
+    public function rebackAction(){
+        $userid = $this->getParam('userid',0,'int');
+        $reback = $this->getParam('reback',0,'int');
+        $mapper = \Mapper\UsersModel::getInstance();
+        $user = $mapper->findById($userid);
+        if(!$user instanceof \UsersModel){
+            return $this->returnData('回退用户不存在',21010);
+        }
+        if(empty($reback)){
+            return $this->returnData('回退数量不能为零',21012);
+        }
+        $update = array(
+            'normal_balance'=>'normal_balance-'.$reback,
+            'marketing_balance'=>'marketing_balance-'.$reback,
+            'show_normal_balance'=>'show_normal_balance-'.$reback,
+            'show_marketing_balance'=>'show_marketing_balance-'.$reback,
+            'updated_at'=>date('Y-m-d H:i:s'),
+        );
+        $where = array('id'=>$userid);
+        $res = $mapper->update($update,$where);
+        if(!$res){
+            return $this->returnData('回退失败，请重试!',21013);
+        }
+        return $this->returnData('回退成功',21011,true);
+    }
+
+    /**
+     * 重置密码
+     * @return false
+     */
+    public function resetpwdAction(){
+        $userid = $this->getParam('userid',0,'int');
+        $resetPwd = $this->getParam('resetPwd','','string');
+        $mapper = \Mapper\UsersModel::getInstance();
+        $user = $mapper->findById($userid);
+        if(!$user instanceof \UsersModel){
+            return $this->returnData('用户不存在',21014);
+        }
+        if(empty($resetPwd) || strlen($resetPwd)<6){
+            return $this->returnData('密码长度至少六位',21015);
+        }
+        return $this->returnData('修改成功',21016);
+    }
 
 }
