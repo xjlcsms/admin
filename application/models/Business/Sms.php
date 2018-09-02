@@ -15,6 +15,14 @@ final class SmsModel  extends \Business\AbstractModel{
     private $_dataJson = '';
     private $_sendTime = '';
 
+    /**短信群发
+     * @param \UsersModel $user
+     * @param \SendtasksModel $task
+     * @param bool $useTemplate
+     * @param bool $jsonData
+     * @return bool|mixed
+     * @throws \Exception
+     */
     public function sendAll(\UsersModel $user,\SendtasksModel $task ,$useTemplate = false,$jsonData = false){
         if(empty($task->getSign())){
             return $this->getMsg(21402,'未设置签名');
@@ -58,6 +66,82 @@ final class SmsModel  extends \Business\AbstractModel{
         }
         return $res;
     }
+
+
+    public function virefy(\UsersModel $user,$content,$total){
+        $fee = $this->oneFee($content);
+        $sendTotal = $total*$fee;
+        if($user->getShow_normal_balance()<$sendTotal){
+            return $this->getMsg(29210,'行业短信余额不足');
+        }
+        return true;
+    }
+
+
+    /**短信收费
+     * @param $content
+     * @return int
+     */
+    public function oneFee($content){
+        $strlen = mb_strlen($content);
+        if($strlen>70){
+            $fee = ceil($strlen/67);
+        }else{
+            $fee = 1;
+        }
+        return (int)$fee;
+    }
+
+    /**手机短信批量发送
+     * @param $mobiles
+     * @return array
+     */
+    public function divideMobiles($mobiles){
+        $count = count($mobiles);
+        $data = [];
+        if($count<=5000){
+            $data[] =  $mobiles;
+        }else{
+            $total = ceil($count / 5000);
+            for ($i=0;$i<$total;$i++){
+                $begin = $i*5000;
+                $data[] = array_slice($mobiles,$begin,5000);
+            }
+        }
+        return $data;
+    }
+
+
+    /**获取文件的有效手机号码
+     * @param $filename
+     * @return array|mixed|null
+     * @throws \PHPExcel\PHPExcel\Reader_Exception
+     */
+    public function importMobiles($filename){
+        $redis = $this->getRedis();
+        $mobilesJson = $redis->get(md5($filename));
+        if($mobilesJson !== false){
+            $mobiles = json_decode($mobilesJson,true);
+        }else{
+            try{
+                $read = \PHPExcel\IOFactory::createReader('Excel2007');
+                $obj = $read->load(APPLICATION_PATH.'/public/uploads/sms/'. $filename);
+                $dataArray =$obj->getActiveSheet()->toArray();
+                $mobiles = [];
+                unset($dataArray[0]);
+                foreach ($dataArray as $key=> $item){
+                    if(\Ku\Verify::isMobile($item[0])){
+                        $mobiles[] = $item[0];
+                    }
+                }
+                $mobiles = array_unique($mobiles);
+            }catch (ErrorException $errorException){
+                $mobiles = null;
+            }
+        }
+        return $mobiles;
+    }
+
 
     public function setSendTime($sendTime){
         $this->_sendTime = $sendTime;
