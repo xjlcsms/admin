@@ -14,14 +14,14 @@ resources.redis.host = '127.0.0.1'
 resources.redis.port = '6379'
 resources.redis.auth = ''
 resources.redis.db   = 5
-resources.redis.options.prefix = 'xjlc'
+resources.redis.options.prefix = 'cr'
 
 
 ; 这里重置只是无奈之举, 线上环境建议直接在系统上配置.
 phpSettings.mbstring.internal_encoding      = "utf-8"
 phpSettings.session.save_handler            = "redis"
 phpSettings.session.save_path               = "tcp://127.0.0.1:6379?timeout=10&database=9&auth="
-phpSettings.session.cookie_domain           = ".xjlc.com"
+phpSettings.session.cookie_domain           = "admin.chuangrui.com"
 phpSettings.session.session.cookie_httponly = 1
 
 

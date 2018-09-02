@@ -5,8 +5,7 @@ namespace Ku\Sms;
 final class Adapter {
 
     protected $_initSmser = array(
-        'runyuan' => '润圆',
-        'xuanwu' => '玄武',
+        'chuangrui' => '创瑞',
     );
 
     protected $_smser = null;
