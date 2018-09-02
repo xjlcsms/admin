@@ -37,11 +37,26 @@ final class SmsModel  extends \Business\AbstractModel{
             if(empty($this->_mobiles)){
                 return $this->getMsg(21403,'未设置发送手机号');
             }
+            $driver->setMobiles($this->_mobiles);
             if(empty($task->getContent())){
                 return $this->getMsg(21404,'未设置');
             }
             $driver->setContent($task->getContent());
         }
+        if(!empty($this->_sendTime)){
+            $driver->setScheduleSendTime($this->_sendTime);
+        }
+        $driver->setAccesskey($user->getAccess_key());
+        $driver->setSecret($user->getSecret());
+        $send = $driver->send();
+        if(!$send){
+            return $this->getMsg(21405,'请求失败');
+        }
+        $res = json_decode($send,true);
+        if($res['code'] != 0){
+            return $this->getMsg($res['code'],$this->errorChuangRui($res['code']));
+        }
+        return $res;
     }
 
     public function setSendTime($sendTime){
