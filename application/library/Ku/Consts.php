@@ -42,6 +42,9 @@ final class Consts {
     //缓存请求数，限制请求数量
     const QR_REQ_LIMIT = 'qr.req.limit.%s.%s';
 
+    //任务处理加锁键
+    const SYSTEM_LOCK_TASK = 'lock.%s.%s.%s';
+
     private function __construct() {}
     private function __sleep() {}
     private function __clone() {}

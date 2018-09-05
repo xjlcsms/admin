@@ -16,6 +16,14 @@ class SendtasksModel extends \Mapper\AbstractModel
 
     protected $table = 'send_tasks';
 
+    protected $_sendTypes = array(1=>'验证码',2=>'通知',3=>'营销');
 
+    public function getSendTypes(){
+        return $this->_sendTypes;
+    }
+
+    public function getSendType($type){
+        return $this->_sendTypes[$type];
+    }
 
 }

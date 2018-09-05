@@ -154,6 +154,26 @@ class QueueModel extends \Base\Model\AbstractModel {
     protected $_sys_send = 0;
 
     /**
+     * 发送短信类型
+     * 
+     * Column Type: tinyint(1)
+     * Default: 0
+     * 
+     * @var int
+     */
+    protected $_type = 0;
+
+    /**
+     * 发送时间
+     * 
+     * Column Type: bigint(20) unsigned
+     * Default: 0
+     * 
+     * @var int
+     */
+    protected $_sendTime = 0;
+
+    /**
      * Params
      * 
      * Column Type: array
@@ -540,6 +560,60 @@ class QueueModel extends \Base\Model\AbstractModel {
     }
 
     /**
+     * 发送短信类型
+     * 
+     * Column Type: tinyint(1)
+     * Default: 0
+     * 
+     * @param int $type
+     * @return \QueueModel
+     */
+    public function setType($type) {
+        $this->_type = (int)$type;
+        $this->_params['type'] = (int)$type;
+        return $this;
+    }
+
+    /**
+     * 发送短信类型
+     * 
+     * Column Type: tinyint(1)
+     * Default: 0
+     * 
+     * @return int
+     */
+    public function getType() {
+        return $this->_type;
+    }
+
+    /**
+     * 发送时间
+     * 
+     * Column Type: bigint(20) unsigned
+     * Default: 0
+     * 
+     * @param int $sendTime
+     * @return \QueueModel
+     */
+    public function setSendTime($sendTime) {
+        $this->_sendTime = (int)$sendTime;
+        $this->_params['sendTime'] = (int)$sendTime;
+        return $this;
+    }
+
+    /**
+     * 发送时间
+     * 
+     * Column Type: bigint(20) unsigned
+     * Default: 0
+     * 
+     * @return int
+     */
+    public function getSendTime() {
+        return $this->_sendTime;
+    }
+
+    /**
      * Return a array of model properties
      * 
      * @return array
@@ -559,7 +633,9 @@ class QueueModel extends \Base\Model\AbstractModel {
             'batchId'     => $this->_batchId,
             'code'        => $this->_code,
             'msg'         => $this->_msg,
-            'sys_send'    => $this->_sys_send
+            'sys_send'    => $this->_sys_send,
+            'type'        => $this->_type,
+            'sendTime'    => $this->_sendTime
         );
     }
 

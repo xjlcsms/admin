@@ -124,10 +124,58 @@ abstract class CronAbstract {
         }
         return $apiIni->get($conName);
     }
-    
-    public function log($msg){
-          echo date('Y-m-d H:i:s').'-'.$msg."\r\n";
-    }    
 
+    public function log($msg){
+        echo date('Y-m-d H:i:s').'-'.$msg."\r\n";
+    }
+
+    public function start($msg){
+        echo date('Y-m-d H:i:s').'-'.$msg.":start\r\n";
+
+    }
+    public function success($msg){
+        echo date('Y-m-d H:i:s').'-'.$msg.":success\r\n";
+    }
+    public function fail($msg){
+        echo date('Y-m-d H:i:s').'-'.$msg.":fail\r\n";
+    }
+
+    public function end($msg){
+        echo date('Y-m-d H:i:s').'-'.$msg.":end\r\n";
+
+    }
+
+    /**
+     *锁定任务
+     */
+    public function locked($key, $class = __CLASS__,$function = __FUNCTION__, $expire = 1200){
+
+        $redis = $this->getRedis();
+        $class = str_replace('\\', '.', $class);
+        $lockKey = sprintf(\Ku\Consts::SYSTEM_LOCK_TASK,$class,$function,$key);
+        $value = $redis->get($lockKey);
+        if($value){
+            return false;
+        }else{
+            $redis->incr($lockKey);
+            $redis->expire($lockKey,$expire);
+            return true;
+        }
+
+    }
+    /**
+     *解锁任务
+     */
+    public function unlock($key, $class = __CLASS__,$function = __FUNCTION__){
+        $redis = $this->getRedis();
+        $class = str_replace('\\', '.', $class);
+        $lockKey = sprintf(\Ku\Consts::SYSTEM_LOCK_TASK, $class, $function, $key);
+        $value = $redis->get($lockKey);
+        if($value){
+            $redis->delete($lockKey);
+            return true;
+        }
+        return true;
+    }
     abstract public function main();
 }

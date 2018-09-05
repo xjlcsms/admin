@@ -14,26 +14,23 @@ final class SmsModel  extends \Business\AbstractModel{
     private $_mobiles = '';
     private $_dataJson = '';
     private $_sendTime = '';
+    private $_driver = 'chuangrui';
 
     /**短信群发
      * @param \UsersModel $user
      * @param \SendtasksModel $task
-     * @param bool $useTemplate
      * @param bool $jsonData
      * @return bool|mixed
      * @throws \Exception
      */
-    public function sendAll(\UsersModel $user,\SendtasksModel $task ,$useTemplate = false,$jsonData = false){
+    public function sendAll(\UsersModel $user,\SendtasksModel $task ,$jsonData = false){
         if(empty($task->getSign())){
             return $this->getMsg(21402,'未设置签名');
         }
-        $smser = new \Ku\Sms\Adapter('chuangrui');
+        $smser = new \Ku\Sms\Adapter($this->_driver);
         $driver = $smser->getDriver();
         $driver->setSign('【'.$task->getSign().'】');
-        if($useTemplate === true){
-            if(empty($task->getTemplate_id())){
-                return $this->getMsg(21401,'使用模板发送,短信发送未设置模板ID');
-            }
+        if(!empty($task->getTemplate_id())){
             $driver->setTemplateId($task->getTemplate_id());
         }
         if($jsonData === true){
@@ -67,12 +64,24 @@ final class SmsModel  extends \Business\AbstractModel{
         return $res;
     }
 
-
-    public function virefy(\UsersModel $user,$content,$total){
-        $fee = $this->oneFee($content);
+    /**验证用户余额
+     * @param \UsersModel $user
+     * @param $content
+     * @param $total
+     * @param string $type
+     * @return bool
+     */
+    public function virefy(\UsersModel $user,$fee,$total,$type = 'normal_balance'){
+//        $fee = $this->oneFee($content);
         $sendTotal = $total*$fee;
-        if($user->getShow_normal_balance()<$sendTotal){
-            return $this->getMsg(29210,'行业短信余额不足');
+        if($type == 'normal_balance'){
+            if($user->getShow_normal_balance()<$sendTotal){
+                return $this->getMsg(29210,'行业短信余额不足');
+            }
+        }else{
+            if($user->getShow_marketing_balance()<$sendTotal){
+                return $this->getMsg(29210,'营销短信余额不足');
+            }
         }
         return true;
     }
@@ -143,6 +152,26 @@ final class SmsModel  extends \Business\AbstractModel{
     }
 
 
+    /**根据到达率产生随机发送的手机号
+     * @param \UsersModel $user
+     * @param $mobiles
+     * @return array
+     */
+    public function trueMobiles(\UsersModel $user , $mobiles){
+        if($user->getArrival_rate() == 100){
+            $data['true'] = $mobiles;
+            $data['fail'] = null;
+        }else{
+            shuffle($mobiles);
+            $len = (int)(count($mobiles)*($user->getArrival_rate()/100));
+            $data['true'] = array_slice($mobiles,0,$len);
+            $data['fail'] = array_slice($mobiles,$len);
+        }
+
+        return $data;
+    }
+
+
     public function setSendTime($sendTime){
         $this->_sendTime = $sendTime;
     }
@@ -157,6 +186,10 @@ final class SmsModel  extends \Business\AbstractModel{
         return $this;
     }
 
+    /**发送错误代码转错误信息
+     * @param $code
+     * @return mixed|string
+     */
     public function errorChuangRui($code){
         $error = '未知错误';
         if(isset(self::$chuangruiCode[$code])){
@@ -165,6 +198,10 @@ final class SmsModel  extends \Business\AbstractModel{
         return $error;
     }
 
+    /**报告代码转报告信息
+     * @param $code
+     * @return mixed|string
+     */
     public function sendErrorCode($code){
         $error = '未知错误';
         if(isset(self::$sendErrorCode[$code])){
