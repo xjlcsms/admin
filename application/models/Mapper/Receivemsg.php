@@ -7,14 +7,14 @@
  */
 namespace Mapper;
 
-class SmsorderModel extends \Mapper\AbstractModel
+class ReceivemsgModel extends \Mapper\AbstractModel
 {
 
     use \Base\Model\InstanceModel;
 
-    protected $modelClass = '\SmsorderModel';
+    protected $modelClass = '\ReceivemsgModel';
 
-    protected $table = 'sms_order';
+    protected $table = 'receive_msg';
 
 
 

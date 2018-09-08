@@ -12,7 +12,9 @@ class CallbackController extends \Base\ApplicationController{
 
     }
 
-
+    /**短信回执接收
+     * @return bool
+     */
     public function reportAction(){
         $this->disableLayout();
         $this->disableView();
@@ -54,23 +56,52 @@ class CallbackController extends \Base\ApplicationController{
         }
         if($res === false){
             $mapper->rollback();
-           $data = array('code'=>1,'msg'=>'FAIL');
-        }else{
-            $data = array('code'=>0,'msg'=>'SUCCESS');
+            return $this->returnPost(array('code'=>1,'msg'=>'FAIL'));
         }
+        $data = array('code'=>0,'msg'=>'SUCCESS');
         $mapper->commit();
         return $this->returnPost($data);
     }
 
-
+    /**
+     * 回复消息接收
+     */
     public function receiveAction(){
-
+        $this->disableLayout();
+        $this->disableView();
+        $request =  $request = $this->getRequest();
+        $parmas = $request->getPost();
+        $gParam = $request->getQuery();
+        $parmas = array_merge($parmas, $gParam);
+        \Ku\Log\Adapter::getInstance()->Applog(array(json_encode($parmas), __CLASS__, __FUNCTION__, __LINE__));
+        if(!isset($parmas['content'])||!isset($parmas['receiveTime'])||!isset($parmas['extNo'])||!isset($parmas['mobile'])){
+            return $this->returnPost(array('code'=>2,'msg'=>'FAIL'));
+        }
+        $mapper = \Mapper\ReceivemsgModel::getInstance();
+        $mapper->begin();
+        $msg = new \ReceivemsgModel();
+        $msg->setMobile($parmas['mobile']);
+        $msg->setContent($parmas['content']);
+        $msg->setReceive_time($parmas['receiveTime']);
+        $msg->setExtNo($parmas['extNo']);
+        $res = $mapper->insert($msg);
+        if($res === false){
+            $mapper->rollback();
+            return $this->returnPost(array('code'=>1,'msg'=>'FAIL'));
+        }
+        $data = array('code'=>0,'msg'=>'SUCCESS');
+        $mapper->commit();
+        return $this->returnPost($data);
     }
 
-
+    /**回调返回结果
+     * @param $data
+     * @return bool
+     */
     public function returnPost($data){
         header('Content-type: application/json; charset=utf-8');
         echo \json_encode($data,JSON_UNESCAPED_UNICODE );
+        return false;
     }
 
 
