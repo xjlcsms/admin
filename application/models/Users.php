@@ -159,6 +159,16 @@ class UsersModel extends \Base\Model\AbstractModel {
     protected $_secret = null;
 
     /**
+     * Isdel
+     * 
+     * Column Type: tinyint(1) unsigned
+     * Default: 0
+     * 
+     * @var int
+     */
+    protected $_isdel = 0;
+
+    /**
      * Params
      * 
      * Column Type: array
@@ -562,6 +572,33 @@ class UsersModel extends \Base\Model\AbstractModel {
     }
 
     /**
+     * Isdel
+     * 
+     * Column Type: tinyint(1) unsigned
+     * Default: 0
+     * 
+     * @param int $isdel
+     * @return \UsersModel
+     */
+    public function setIsdel($isdel) {
+        $this->_isdel = (int)$isdel;
+        $this->_params['isdel'] = (int)$isdel;
+        return $this;
+    }
+
+    /**
+     * Isdel
+     * 
+     * Column Type: tinyint(1) unsigned
+     * Default: 0
+     * 
+     * @return int
+     */
+    public function getIsdel() {
+        return $this->_isdel;
+    }
+
+    /**
      * Return a array of model properties
      * 
      * @return array
@@ -582,7 +619,8 @@ class UsersModel extends \Base\Model\AbstractModel {
             'created_at'             => $this->_created_at,
             'updated_at'             => $this->_updated_at,
             'access_key'             => $this->_access_key,
-            'secret'                 => $this->_secret
+            'secret'                 => $this->_secret,
+            'isdel'                  => $this->_isdel
         );
     }
 

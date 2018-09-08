@@ -34,5 +34,19 @@ class QueueModel extends \Mapper\AbstractModel
         return $model;
     }
 
+    public function pullSuccess($type=''){
+        $where = array('status'=>2);
+        if(!empty($type)){
+            $where['type'] = $type;
+        }
+        $model = $this->fetch($where,array('id asc'));
+        if (!$model instanceof \QueueModel){
+            return null;
+        }
+        $model->setStatus(11);
+        $this->update($model);
+        return $model;
+    }
+
 
 }

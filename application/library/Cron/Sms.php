@@ -46,4 +46,55 @@ class Sms extends \Cron\CronAbstract {
     }
 
 
+    /**发送队列转订单记录
+     * @return bool
+     */
+    public function addOrder(){
+        $mapper = \Mapper\QueueModel::getInstance();
+        $begin = time();
+        $orderMapper = \Mapper\SmsorderModel::getInstance();
+        while(time() - $begin <60) {
+            $model = $mapper->pullSuccess();
+            if (!$model instanceof \QueueModel) {
+                sleep(1);
+                continue;
+            }
+            if ($this->locked($model->getId(), __CLASS__, __FUNCTION__, 1200) === false) {
+                sleep(1);
+                continue;
+            }
+            $this->start($model->getId());
+            $mobiles = explode(',',$model->getMobiles());
+            $order= new \SmsorderModel();
+            $order->setStatus(0);
+            $order->setBatchId($model->getBatchId());
+            $order->setUser_id($model->getUser_id());
+            $order->setTask_id($model->getTask_id());
+            $order->setCreate_time($model->getSendTime());
+            if($model->getIsfail()){
+                $order->setUid(0);
+                $order->setResult('FAIL');
+                $order->setStatus(1);
+            }
+            foreach ($mobiles as $mobile){
+                $orderMapper->begin();
+                $exist = $orderMapper->fetch(array('mobile'=>$mobile,'batchId'=>$model->getBatchId()));
+                if($exist instanceof \SmsorderModel){
+                    continue;
+                }
+                $order->setMobile($mobile);
+                if($model->getSys_send() == 1){
+                    $order->setShow_mobile(substr_replace($mobile,'******',2,-3));
+                }else{
+                    $order->setShow_mobile($mobile);
+                }
+                $orderMapper->insert($order);
+                $orderMapper->commit();
+            }
+            $model->setStatus(12);
+            $this->success($model->getId());
+        }
+        return false;
+    }
+
 }

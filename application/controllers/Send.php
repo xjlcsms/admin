@@ -216,6 +216,7 @@ class SendController extends \Base\ApplicationController{
                 $model->setMobiles($mobileStr);
                 $model->setSend_num(count($mobile));
                 $model->setIsfail(1);
+                $model->setStatus(2);
                 $res = $smsMapper->insert($model);
                 if($res === false){
                     $smsMapper->rollback();

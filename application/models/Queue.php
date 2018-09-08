@@ -98,7 +98,7 @@ class QueueModel extends \Base\Model\AbstractModel {
     /**
      * 队列状态
      * 
-     * Column Type: tinyint(1)
+     * Column Type: tinyint(3)
      * Default: 0
      * 
      * @var int
@@ -404,7 +404,7 @@ class QueueModel extends \Base\Model\AbstractModel {
     /**
      * 队列状态
      * 
-     * Column Type: tinyint(1)
+     * Column Type: tinyint(3)
      * Default: 0
      * 
      * @param int $status
@@ -419,7 +419,7 @@ class QueueModel extends \Base\Model\AbstractModel {
     /**
      * 队列状态
      * 
-     * Column Type: tinyint(1)
+     * Column Type: tinyint(3)
      * Default: 0
      * 
      * @return int
