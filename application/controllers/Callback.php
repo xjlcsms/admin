@@ -39,7 +39,7 @@ class CallbackController extends \Base\ApplicationController{
             $order->setBatchId($queue->getBatchId());
             $order->setUser_id($queue->getUser_id());
             $order->setTask_id($queue->getTask_id());
-            $order->setCreate_time($queue->getSendTime());
+            $order->setCreate_time($queue->getCreate_time());
             $order->setMobile($parmas['mobile']);
             if($queue->getSys_send() == 1){
                 $order->setShow_mobile(substr_replace($parmas['mobile'],'******',2,-3));

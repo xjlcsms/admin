@@ -70,7 +70,7 @@ class Sms extends \Cron\CronAbstract {
             $order->setBatchId($model->getBatchId());
             $order->setUser_id($model->getUser_id());
             $order->setTask_id($model->getTask_id());
-            $order->setCreate_time($model->getSendTime());
+            $order->setCreate_time($model->getCreate_time());
             if($model->getIsfail()){
                 $order->setUid(0);
                 $order->setResult('FAIL');
