@@ -18,6 +18,8 @@ class CallbackController extends \Base\ApplicationController{
         $this->disableView();
         $request =  $request = $this->getRequest();
         $parmas = $request->getPost();
+        $gParam = $request->getQuery();
+        $parmas = array_merge($parmas, $gParam);
         \Ku\Log\Adapter::getInstance()->Applog(array(json_encode($parmas), __CLASS__, __FUNCTION__, __LINE__));
         if(!isset($parmas['smUuid'])||!isset($parmas['deliverTime'])||!isset($parmas['deliverResult'])||!isset($parmas['mobile'])||!isset($parmas['batchId'])){
             return $this->returnPost(array('code'=>2,'msg'=>'FAIL'));
