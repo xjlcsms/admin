@@ -196,4 +196,21 @@ class UserController extends \Base\ApplicationController
         return $this->returnData('修改成功',21016);
     }
 
+
+    public function delAction(){
+        $userId = $this->getParam('id',0,'int');
+        $mapper = \Mapper\UsersModel::getInstance();
+        $user = $mapper->fetch(array('id'=>$userId,'isdel'=>0));
+        if(!$user instanceof \UsersModel){
+            return $this->returnData('用户不存在',1000);
+        }
+        $user->setIsdel(1);
+        $user->setUpdated_at(date('Y-m-d H:i:s'));
+        $res = $mapper->update($user);
+        if($res === false){
+            return $this->returnData('删除失败,请重试',1000);
+        }
+        return $this->returnData('删除成功',1001,true);
+    }
+
 }

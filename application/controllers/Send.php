@@ -240,18 +240,18 @@ class SendController extends \Base\ApplicationController{
     }
 
 
-    public function testAction(){
-        $business = \Business\SmsModel::getInstance();
-        $user = \Mapper\UsersModel::getInstance()->findById(1);
-        $task = \Mapper\SendtasksModel::getInstance()->findById(1);
-        $business->setMobiles(13386936061);
-        $res = $business->sendAll($user,$task);
-        if(!$res){
-            $msg = $business->getMessage();
-            var_dump($msg);
-        }
-        var_dump($res);
-    }
+//    public function testAction(){
+//        $business = \Business\SmsModel::getInstance();
+//        $user = \Mapper\UsersModel::getInstance()->findById(1);
+//        $task = \Mapper\SendtasksModel::getInstance()->findById(1);
+//        $business->setMobiles(13386936061);
+//        $res = $business->sendAll($user,$task);
+//        if(!$res){
+//            $msg = $business->getMessage();
+//            var_dump($msg);
+//        }
+//        var_dump($res);
+//    }
 
 
     /**批量发送文件上传
@@ -360,6 +360,43 @@ class SendController extends \Base\ApplicationController{
             return $this->returnData('驳回任务失败，请重试',29402);
         }
         return $this->returnData('处理成功',29401,true);
+    }
+
+
+    public function orderAction(){
+        $mapper = \Mapper\SmsorderModel::getInstance();
+        $mobile = $this->getParam('mobile','','string');
+        $userId = $this->getParam('userId','','int');
+        $taskId = $this->getParam('taskId','','int');
+        $result = $this->getParam('result','','string');
+        $where = array();
+        if($mobile){
+            $where['mobile'] = $mobile;
+        }
+        if($userId){
+            $where['user_id'] = $userId;
+        }
+        if($taskId){
+            $where['task_id'] = $taskId;
+        }
+        if($result){
+            if($result == 1){
+                $where['result'] = 'DELIVRD';
+            }else{
+                $where[] = "result != 'DELIVRD'";
+            }
+        }
+        $select = $mapper->select();
+        $select->where($where);
+        $select->order(array('create_time desc'));
+        $page = $this->getParam('page', 1, 'int');
+        $pagelimit = $this->getParam('pagelimit', 15, 'int');
+        $pager = new \Ku\Page($select, $page, $pagelimit, $mapper->getAdapter());
+        $this->assign('pager', $pager);
+        $this->assign('result',$result);
+        $this->assign('taskId',$taskId);
+        $this->assign('userId',$userId);
+        $this->assign('mobile',$mobile);
     }
 
 
