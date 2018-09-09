@@ -74,7 +74,7 @@ class Sms extends \Cron\CronAbstract {
             if($model->getIsfail()){
                 $order->setUid(0);
                 $order->setResult('FAIL');
-                $order->setStatus(1);
+                $order->setStatus(2);
             }
             foreach ($mobiles as $mobile){
                 $orderMapper->begin();
