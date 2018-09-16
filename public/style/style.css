@@ -1,0 +1,50 @@
+.none {
+  display: none;
+}
+.center {
+  text-align: center;
+}
+.right_col {
+  overflow: auto;
+}
+.search-form {
+  overflow: hidden;
+}
+.search-form .btn {
+  margin-bottom: 3px;
+}
+.search-form .input-prepend.input-group{
+  display: inline-block;
+  margin-bottom: 0px;
+}
+.search-form .input-prepend .add-on.input-group-addon {
+  display: inline-block;
+  width: auto;
+  margin: 0 -4px 4px 0;
+  padding: 0px 12px;
+  height: 32px;
+  line-height: 34px;
+  vertical-align: middle;
+}
+.search-form .form-control {
+  height: 32px;
+}
+.search-form .input-group .form-control {
+  float: none;
+}
+ .modal .modal-dialog {
+  margin-top: 200px;
+}
+.open-user-modal .radio {
+  padding-left: 0px; 
+  padding-right: 0px;
+}
+.table {
+  margin-top: 5px
+}
+.text-left {
+  text-align: left !important;
+}
+td {
+  line-height: 34px !important;
+}

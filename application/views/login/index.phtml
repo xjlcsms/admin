@@ -1,6 +1,84 @@
-<form action="/login/i" method="post">
-    用户名：<input type="text" name="username"/>
-    密码：<input type="password" name="password"/>
-    <input type="radio" value="1" name="isremember">记住账号
-    <input type="submit" value="登陆" >
-</form>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Bootstrap -->
+    <link href="/assets/plugins/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="/assets/plugins/nprogress/nprogress.css" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="/assets/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="/assets/css/build/custom.min.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="/assets/plugins/animate.css/animate.min.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="/assets/plugins/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/assets/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
+  </head>
+
+  <body class="login">
+    <div>
+      <a class="hiddenanchor" id="signup"></a>
+      <a class="hiddenanchor" id="signin"></a>
+
+      <div class="login_wrapper">
+        <div class="animate form login_form">
+          <section class="login_content">
+            <form class="form-horizontal">
+              <h1>登录</h1>
+              <div>
+                <input type="text" class="form-control" placeholder="用户名" id="username">
+              </div>
+              <div>
+                <input type="password" class="form-control" placeholder="密码" id="password">
+              </div>
+              <div class="checkbox left">
+                <label><input type="checkbox" id="isremember" value>记住用户名？</label>
+              </div>
+              <div class="clearfix"></div>
+              <div>
+                <a class="btn btn-default" id="login">登录</a>
+              </div>
+              
+            </form>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="/assets/plugins/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="/assets/plugins/nprogress/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="/assets/plugins/Chart.js/dist/Chart.min.js"></script>
+    <!-- jQuery Sparklines -->
+    <script src="/assets/plugins/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <!-- Flot -->
+    <script src="/assets/plugins/Flot/jquery.flot.js"></script>
+    <script src="/assets/plugins/Flot/jquery.flot.pie.js"></script>
+    <script src="/assets/plugins/Flot/jquery.flot.time.js"></script>
+    <script src="/assets/plugins/Flot/jquery.flot.stack.js"></script>
+    <script src="/assets/plugins/Flot/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="/assets/plugins/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="/assets/plugins/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="/assets/plugins/flot.curvedlines/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="/assets/plugins/DateJS/build/date.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="/assets/plugins/moment/min/moment.min.js"></script>
+    <script src="/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    
+    <!-- Custom Theme Scripts -->
+    <script src="/assets/plugins/build/custom.min.js"></script>
+
+    <!-- login -->
+    <script src="/script/login/index.js"></script>
+  </body>
+</html>
