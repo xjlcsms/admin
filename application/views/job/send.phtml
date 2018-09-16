@@ -1,0 +1,93 @@
+<?php $this->display("public/header.phtml", array()); ?>
+  <?php $this->display("public/sidebar.phtml"); ?>
+    <?php $this->display("public/nav.phtml"); ?>
+    <div class="right_col" role="main">
+      <div class="">
+        <div class="row x_title">
+          <div class="col-md-6">
+            <h3>短信发送</h3>
+          </div>
+        </div>
+        <div class="x_content">
+          <div class="text-muted font-13 m-b-30">
+            <div class="form-horizontal form-label-left">
+              <div class="form-group">
+                <label class="control-label col-sm-2">号码归属地：</label>
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                  <input name="mobiles" type="text" class="form-control" value="<?php echo $this->task['area']; ?>" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2">号码数量：</label>
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                  <input name="num" type="text" class="form-control" value="<?php echo $this->task['quantity'];?>" disabled>
+                </div>
+              </div>
+              <div class="form-group open-user-modal">
+                <label class="control-label col-sm-2">号码池</label>
+                <div class="col-md-4">
+                  <div class="radio col-md-2">
+                    <label><input type="radio" name="smstype" value="1" checked>批量导入</label>
+                  </div>
+                  <div class="radio col-md-2">
+                    <label><input type="radio" name="smstype" value="2">手动输入</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" id="auto">
+                <label class="control-label col-sm-2">批量导入手机号</label>
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                  <form enctype="multipart/form-data" id="fileinfo">
+                    <input type="file" name="file" id="smsFile">
+                  </form>
+                </div>
+                <a class="btn btn-primary btn-sm" href="/index/job/downtemp">下载批量导入模板</a>
+              </div>
+              <div class="form-group none" id="result">
+                <label class="control-label col-sm-2"><span id="fileName"></span></label>
+                <div class="col-md-4 control-label text-left">
+                  <label>共计号码数：<span id="totalNum">0</span>个，有效号码数：<span id="useNum">0</span>个(已过滤错误号码：<span id="errNum">0</span>个，已过滤重复号码<span id="reNum">0</span>个)</label>
+                </div>
+                <a class="btn btn-primary btn-sm" id="delSmsFile">删除</a>
+              </div>
+              <div class="form-group none" id="manual">
+                <label class="control-label col-sm-2">输入待发送手机号</label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <textarea class="form-control" style="height: 50px" name="phoneText" id="phoneText"></textarea> 
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2">短信类型</label>
+                <div class="col-sm-1">
+                  <select class="form-control" name="type" id="type">
+                      <?php foreach ($this->sendTypes as $key =>$value):?>
+                          <option value="<?php echo $key;?>" <?php echo $key==$this->task['sms_type']?'selected':'';?>><?php echo $value;?></option>
+                      <?php endforeach;?>
+                  </select>
+                </div>
+                <label class="control-label col-sm-1">短信签名</label>
+                <div class="col-md-2">
+                  <input name="sign" type="text" class="form-control" placeholder="长度为2-8个字符" value="<?php echo $this->task['sign'];?>">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2">短信内容</label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <textarea class="form-control" style="height: 100px" name="content" id="content"><?php echo $this->task['content'];?></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2">统计：</label>
+                <label class="control-label col-sm-2 text-left">内容长度计费条数:<span id="branch"></span>条 总计费条数:0条</label>
+                <label class="control-label col-sm-4"><span id="num">0</span>/500</label>
+              </div>
+              <a class="btn btn-primary btn-sm col-sm-offset-2" id="sendBtn">发送</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/script/job/send.js"></script>
+<?php $this->display("public/footer.phtml"); ?>

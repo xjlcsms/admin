@@ -1,0 +1,104 @@
+<?php $this->display("public/header.phtml", array()); ?>
+  <?php $this->display("public/sidebar.phtml"); ?>
+    <?php $this->display("public/nav.phtml"); ?>
+      <div class="right_col" role="main">
+        <div class="">
+          <div class="row x_title">
+            <div class="col-md-6">
+              <h3>发送记录</h3>
+            </div>
+          </div>
+          <div class="x_content">
+            <div class="text-muted font-13 m-b-30">
+              <div class="dataTables_wrapper dt-bootstrap no-footer">
+                <div class="row">
+                  <div class="col-sm-10">
+                    <form class="search-form">
+                      <input type="hidden" name="taskId" value="<?php echo $this->taskId;?>">
+                      <label>
+                        <input type="text" class="form-control input-sm" placeholder="请输入手机号" name="mobile" value="<?php echo $this->mobile;?>">
+                      </label>
+                      <label>
+                        <input type="text" class="form-control input-sm" placeholder="请输入内容" name="content" value="<?php echo $this->content;?>">
+                      </label>
+                      <span>发送状态</span>
+                      <label>
+                        <select class="form-control input-sm" name="statusData">
+                          <?php foreach ($this->statusData as $key =>$value):?>
+                            <option value="<?php echo $key;?>" <?php echo $key==$this->status?'selected':'';?>><?php echo $value;?></option>
+                          <?php endforeach;?>
+                        </select>
+                      </label>
+                      <span>到达状态</span>
+                      <label>
+                        <select class="form-control input-sm">
+                            <option value="0">全部</option>
+                            <option value="1">已到达</option>
+                            <option value="2">未到达</option>
+                        </select>
+                      </label>
+                      <div class="input-prepend input-group">
+                        <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                        <input type="text" style="width: 200px" name="time" id="reservation" class="form-control" value="">
+                      </div>
+                      <button class="btn btn-primary btn-sm">搜索</button>
+                    </form>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="dataTables_filter">
+                      <label>
+                        <select class="form-control input-sm" id="selectPage">
+                          <option value="10">10</option>
+                          <option value="25">25</option>
+                          <option value="50">50</option>
+                          <option value="100">100</option>
+                        </select>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <table id="datatable" class="table table-striped table-bordered">
+                      <thead>
+                        <tr>
+                          <th>序号</th>
+                          <th>手机号</th>
+                          <th>发送内容</th>
+                          <th>发送状态</th>
+                          <th>到达状态</th>
+                          <th>状态码</th>
+                          <th>发送时间</th>
+                          <th>计费条数</th>
+                        </tr>
+                      </thead>
+                        <?php if(!empty($this->pager->getList())):?>
+                            <?php foreach ($this->pager->getList() as $key=>$value):?>
+                                <tbody>
+                                <tr>
+                                    <td><?php echo $value['id'];?></td>
+                                    <td><?php echo $value['masked_phone'];?></td>
+                                    <td><?php echo $value['content'];?></td>
+                                    <td style="line-height: 34px;overflow: hidden;width: 200px"><?php echo $this->statusData[$value['status']]?></td>
+                                    <td><?php echo $this->statusData[$value['report_status']]?></td>
+                                    <td><?php echo $value['code']?></td>
+                                    <td><?php echo date('Y-m-d H:i:s',strtotime($value['created_at']))?></td>
+                                    <td><?php echo $value['billing_count']?></td>
+                                </tr>
+                                </tbody>
+                            <?php endforeach;?>
+                        <?php else:?>
+                            <tbody>
+                            <tr><td colspan="16">没有找到发送记录</td></tr>
+                            </tbody>
+                        <?php endif;?>
+                    </table>
+                    <?php //echo $this->renderTpl('public/pagination.phtml',array(),'index');?>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+<?php $this->display("public/footer.phtml"); ?>

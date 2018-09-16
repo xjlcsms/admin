@@ -1,9 +1,9 @@
-@-ms-viewport     { width: device-width; }
+/*@-ms-viewport     { width: device-width; }
 @-o-viewport      { width: device-width; }
-@viewport         { width: device-width; }
+@viewport         { width: device-width; }*/
 
 /* YUI reset.css */
-body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td {
+/*body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td {
     margin: 0;
     padding: 0
 }
@@ -51,8 +51,6 @@ input,textarea,select {
 legend {
     color: #000
 }
-
-/* layout */
 html,body{
 	height: 100%;
 }
@@ -119,9 +117,9 @@ label{
 }
 .text-success{
     color: green;
-}
+}*/
 
-@media (max-width: 768px){
+/*@media (max-width: 768px){
     .container-fluid {
         padding: 0;
     }
@@ -142,4 +140,4 @@ label{
         margin-left: 0;
         padding: 20px 15px;
     }
-}
+}*/

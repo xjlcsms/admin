@@ -1,96 +1,63 @@
-<?php
-    $this->display("public/header.phtml", array(
-        'title'=>'联图二维码用户管理系统',
-        'addStyle' => array('index/index.css')
-    ));
-    $this->display("public/nav.phtml");
-?>
-<div class="container-fluid">
-    <?php
-        $this->display("public/sidebar.phtml",array('type'=>'index'));
-    ?>
-    <div class="main">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><h3>账户概览</h3></div>
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="th" width="30%">用户身份</td>
-                                <td>
-                                    普通用户
-                                    &nbsp;&nbsp;
-                                    <?php /*屏蔽* ?>
-                                    <a class="btn btn-xs btn-primary" href="/buy/">
-                                        立即升级
-                                    </a>
-                                    <?php /**/?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="th">注册时间</td>
-                                <td><?php echo date('Y-m-d H:i:s',strtotime($this->base_member->getAddtime()));?></td>
-                            </tr>
-                            <tr>
-                                <td class="th">最近登录时间</td>
-                                <td><?php echo date('Y-m-d H:i:s',strtotime($this->base_member->getLast_time()));?></td>
-                            </tr>
-                            <tr>
-                                <td class="th">会员有效期</td>
-                                <td>永久</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><h3>使用状况</h3></div>
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="th" width="30%">平台码</td>
-                                <td>
-                                    <span class="pull-right text-muted">上限:100个</span>
-                                    <span>已创建<?php echo $this->platform_num;?>个</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="th">活码</td>
-                                <td>
-                                    <span class="pull-right text-muted">上限:100个</span>
-                                    <span>已创建<?php echo $this->live_num;?>个</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+<?php $this->display("public/header.phtml", array()); ?>
+  <?php $this->display("public/sidebar.phtml"); ?>
+    <?php $this->display("public/nav.phtml"); ?>
+    <style type="text/css">
+      .tile_count .tile_stats_count .tile-num {
+        font-size: 40px
+      }
+    </style>
+    <div class="right_col" role="main">
+      <div class="">
+         <!-- 任务统计 start -->
+        <div class="row x_title">
+          <div class="col-md-6">
+            <h3>任务统计</h3>
+          </div>
         </div>
-        <?php if($this->newslist):?>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="mod-notice">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">系统公告</div>
-                            <div class="panel-body">
-                                <ul>
-                                    <?php foreach($this->newslist as $item):?>
-                                        <li>
-                                            <span><?php echo date('Y-m-d H:i:s', strtotime($item->getAddtime()));?></span>
-                                            <a href="/news/detail/?id=<?php echo $item->getId();?>" target="_blank"><?php echo $item->getTitle();?></a>
-                                        </li>
-                                    <?php endforeach;?>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <?php endif;?>
+        <div class="row tile_count">
+          <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-comments-o"></i>待处理任务</span>
+            <div class="count green"><span id="jobnum" class="tile-num"></span>项</div>
+          </div>
+          <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-comments-o"></i>待审核模板</span>
+            <div class="count green"><span id="tempnum" class="tile-num"></span>个</div>
+          </div>
+        </div>
+        <!-- 任务统计 end -->
+
+        <!-- 今日统计信息 start -->
+        <div class="row x_title">
+          <div class="col-md-6">
+            <h3>今日统计</h3>
+          </div>
+        </div>
+        <div class="row tile_count">
+          <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-comments-o"></i>行业短信</span>
+            <div class="count green"><span id="generalSend" class="tile-num"></span>条</div>
+            <span class="count_bottom">今日统计</span>
+          </div>
+          <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-comments-o"></i>营销短信</span>
+            <div class="count green"><span id="marketSend" class="tile-num"></span>条</div>
+            <span class="count_bottom">今日统计</span>
+          </div>
+          <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-comments-o"></i>行业短信</span>
+            <div class="count green"><span id="general" class="tile-num"></span>条</div>
+            <span class="count_bottom">今日充值</span>
+          </div>
+          <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-comments-o"></i>营销短信</span>
+            <div class="count green"><span id="market" class="tile-num"></span>条</div>
+            <span class="count_bottom">今日充值</span>
+          </div>
+        </div>
+        <!-- 今日统计信息 end -->
+      </div>
     </div>
+  </div>
 </div>
-<?php
-    $this->display("public/footer.phtml");
-?>
+<script src="/script/index/index.js"></script>
+<?php $this->display("public/footer.phtml"); ?>

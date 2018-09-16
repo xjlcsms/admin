@@ -1,0 +1,102 @@
+<?php $this->display("public/header.phtml", array()); ?>
+  <?php $this->display("public/sidebar.phtml"); ?>
+    <?php $this->display("public/nav.phtml"); ?>
+      <div class="right_col" role="main">
+        <div class="">
+          <div class="row x_title">
+            <div class="col-md-6">
+              <h3>发送任务</h3>
+            </div>
+          </div>
+          <div class="x_content">
+            <div class="text-muted font-13 m-b-30">
+              <div class="dataTables_wrapper dt-bootstrap no-footer">
+                <div class="row">
+                  <div class="col-sm-10">
+                  <form class="search-form" action="">
+                      <label>创建时间</label>
+                      <div class="input-prepend input-group">
+                        <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                        <input type="text" style="width: 200px" name="time" id="reservation" class="form-control" value="">
+                      </div>
+                      <span>短信类型</span>
+                      <label>
+                        <select class="form-control input-sm" name="statusData">
+                          <?php foreach ($this->statusData as $key =>$value):?>
+                            <option value="<?php echo $key;?>" <?php echo $key==$this->status?'selected':'';?>><?php echo $value;?></option>
+                          <?php endforeach;?>
+                        </select>
+                      </label>
+                      <label>
+                        <input type="text" class="form-control input-sm" placeholder="请输入短信签名" name="sign" value="<?php echo $this->sign;?>">
+                      </label>
+                      <label>
+                        <input type="text" class="form-control input-sm" placeholder="请输入短信内容" name="content" value="<?php echo $this->content;?>">
+                      </label>
+                      <button class="btn btn-primary btn-sm" type="submit">搜索</button>
+                    </form>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="dataTables_filter">
+                      <label>
+                        <select class="form-control input-sm" id="selectPage">
+                          <option value="10">10</option>
+                          <option value="25">25</option>
+                          <option value="50">50</option>
+                          <option value="100">100</option>
+                        </select>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <table id="datatable" class="table table-striped table-bordered">
+                      <thead>
+                        <tr>
+                          <th>序号</th>
+                          <th>发送方</th>
+                          <th>总提交数</th>
+                          <th>总计费数</th>
+                          <th>创建时间</th>
+                          <th>短信类型</th>
+                          <th>短信签名</th>
+                          <th>短信内容</th>
+                          <th>任务进度</th>
+                          <th>操作</th>
+                        </tr>
+                      </thead>
+                        <?php if(!empty($this->pager->getList())):?>
+                            <?php foreach ($this->pager->getList() as $key=>$value):?>
+                                <tbody>
+                                <tr>
+                                    <td><?php echo $value['id'];?></td>
+                                    <td><?php echo $loginUser->getAccount();?></td>
+                                    <td><?php echo $value['quantity']?></td>
+                                    <td style="overflow: hidden;width: 200px"><?php echo $value['billing_amount']?></td>
+                                    <td><?php echo $value['created_at']?></td>
+                                    <td><?php echo $this->types[$value['sms_type']]?></td>
+                                    <td><?php echo $value['sign']?></td>
+                                    <td><?php echo $value['content']?></td>
+                                    <td><?php echo isset($this->statusData[$value['status']])?$this->statusData[$value['status']]:'失败'?></td>
+                                    <td>
+                                        <a class="btn btn-default btn-sm" href="/index/send/sendrecord?taskId=<?php echo $value['id'];?>">查看发送记录</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            <?php endforeach;?>
+                        <?php else:?>
+                            <tbody>
+                            <tr><td colspan="16">没有找到发送任务</td></tr>
+                            </tbody>
+                        <?php endif;?>
+                    </table>
+                      <?php echo $this->renderTpl('public/pagination.phtml',array(),'index');?>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+<?php $this->display("public/footer.phtml"); ?>

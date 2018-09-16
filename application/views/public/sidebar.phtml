@@ -1,0 +1,57 @@
+    <div class="container body">
+      <div class="main_container">
+
+        <!-- 左侧边栏 start -->
+        <div class="col-md-3 left_col">
+          <!-- 左侧边栏上班部分 start -->
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>创瑞云</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="profile clearfix">
+              <div class="profile_pic">
+                <img src="/image/common/logo.png" alt="logo" class="img-circle profile_img">
+              </div>
+              <div class="profile_info"  style="text-align: center;">
+                <span>欢迎登录创瑞云</span>
+                <h2><?php //echo $adminUser->getUsername();?></h2>
+              </div>
+            </div>
+            <br />
+            <!-- 左侧边栏上班部分 end-->
+            
+            <!-- 索引sidebar start -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>General</h3>
+                <ul class="nav side-menu">
+                  <li>
+                    <a href="/"><i class="fa fa-home"></i> 首页 <span class="fa"></span></a>
+                  </li>
+                  <li>
+                    <a><i class="fa fa-home"></i> 用户管理 <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="/index/user/index">用户名单</a></li>
+                      <li><a href="/index/user/records">操作记录</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="/index/template/index"><i class="fa fa-home"></i> 模板管理 <span class="fa"></span></a>
+                  </li>
+                  <li>
+                    <a><i class="fa fa-home"></i> 任务中心 <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="/index/job/index">待处理任务</a></li>
+                      <li><a href="/index/job/deal">处理记录</a></li>
+                      <li><a href="/index/job/record">发送记录</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- 索引sidebar end -->
+          </div>
+        </div>

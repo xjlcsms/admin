@@ -193,7 +193,7 @@ class UserController extends \Base\ApplicationController
         if(empty($resetPwd) || strlen($resetPwd)<6){
             return $this->returnData('密码长度至少六位',21015);
         }
-        return $this->returnData('修改成功',21016);
+        return $this->returnData('修改成功',21016, true);
     }
 
 
