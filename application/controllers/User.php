@@ -132,16 +132,15 @@ class UserController extends \Base\ApplicationController
         if(!$user instanceof \UsersModel){
             return $this->returnData('充值用户不存在',21007);
         }
-//        $time = date('Y-m-d H:i:s');
         if($user->getType() ==1){
             $update = array(
-                'updated_at'=>date('Y-m-d H:i:s'),
+//                'updated_at'=>date('Y-m-d H:i:s'),
                 'normal_balance'=>'normal_balance+'.$recharge,
                 'show_normal_balance'=>'show_normal_balance+'.$recharge,
             );
         }else{
             $update = array(
-                'updated_at'=>date('Y-m-d H:i:s'),
+//                'updated_at'=>date('Y-m-d H:i:s'),
                 'marketing_balance'=>'marketing_balance+'.$recharge,
                 'show_marketing_balance'=>'show_marketing_balance+'.$recharge
             );
@@ -207,13 +206,13 @@ class UserController extends \Base\ApplicationController
         }
         if($user->getType() ==1){
             $update = array(
-                'updated_at'=>date('Y-m-d H:i:s'),
+//                'updated_at'=>date('Y-m-d H:i:s'),
                 'normal_balance'=>'normal_balance-'.$reback,
                 'show_normal_balance'=>'show_normal_balance-'.$reback,
             );
         }else{
             $update = array(
-                'updated_at'=>date('Y-m-d H:i:s'),
+//                'updated_at'=>date('Y-m-d H:i:s'),
                 'marketing_balance'=>'marketing_balance-'.$reback,
                 'show_marketing_balance'=>'show_marketing_balance-'.$reback
             );
@@ -244,7 +243,7 @@ class UserController extends \Base\ApplicationController
         if(empty($resetPwd) || strlen($resetPwd)<6){
             return $this->returnData('密码长度至少六位',21015);
         }
-        $user->setNew_password(Ku\Tool::encryption($resetPwd));
+        $user->setPassword(Ku\Tool::encryption($resetPwd));
         $user->setUpdated_at(date('Y-m-d H:i:s'));
         $res  = $mapper->update($user);
         if(!$res){
