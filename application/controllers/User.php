@@ -117,7 +117,6 @@ class UserController extends \Base\ApplicationController
         return $this->returnData('开户成功',21001,true);
     }
 
-
     /**
      * 用户充值
      * @return false
@@ -133,18 +132,44 @@ class UserController extends \Base\ApplicationController
         if(!$user instanceof \UsersModel){
             return $this->returnData('充值用户不存在',21007);
         }
-        $update = array(
-            'normal_balance'=>'normal_balance+'.$recharge,
-            'marketing_balance'=>'marketing_balance+'.$recharge,
-            'show_normal_balance'=>'show_normal_balance+'.$recharge,
-            'show_marketing_balance'=>'show_marketing_balance+'.$recharge,
-            'updated_at'=>date('Y-m-d H:i:s'),
+//        $time = date('Y-m-d H:i:s');
+        if($user->getType() ==1){
+            $update = array(
+                'updated_at'=>date('Y-m-d H:i:s'),
+                'normal_balance'=>'normal_balance+'.$recharge,
+                'show_normal_balance'=>'show_normal_balance+'.$recharge,
             );
+        }else{
+            $update = array(
+                'updated_at'=>date('Y-m-d H:i:s'),
+                'marketing_balance'=>'marketing_balance+'.$recharge,
+                'show_marketing_balance'=>'show_marketing_balance+'.$recharge
+            );
+        }
         $where = array('id'=>$userid);
+        $mapper->begin();
         $res = $mapper->update($update,$where);
         if(!$res){
+            $mapper->rollback();
             return $this->returnData('充值失败，请重试!',21008);
         }
+        $business = \Business\LoginModel::getInstance();
+        $admin = $business->getCurrentUser();
+        $model = new \RechargerecordsModel();
+        $model->setCreated_at(date('Y-m-d H:i:s'));
+        $model->setAdmin_id($admin->getId());
+        $model->setUpdated_at(date('Y-m-d H:i:s'));
+        $model->setUser_id($userid);
+        $model->setType($user->getType());
+        $model->setDirection(1);
+        $model->setAmount($recharge);
+        $model->setShow_amount($recharge);
+        $res = \Mapper\RechargerecordsModel::getInstance()->insert($model);
+        if(!$res){
+            $mapper->rollback();
+            return $this->returnData('添加充值记录失败!',21010);
+        }
+        $mapper->commit();
         return $this->returnData('充值成功',21009,true);
     }
 
@@ -163,20 +188,46 @@ class UserController extends \Base\ApplicationController
         if(empty($reback)){
             return $this->returnData('回退数量不能为零',21012);
         }
-        $update = array(
-            'normal_balance'=>'normal_balance-'.$reback,
-            'marketing_balance'=>'marketing_balance-'.$reback,
-            'show_normal_balance'=>'show_normal_balance-'.$reback,
-            'show_marketing_balance'=>'show_marketing_balance-'.$reback,
-            'updated_at'=>date('Y-m-d H:i:s'),
-        );
+        $mapper->begin();
+        $business = \Business\LoginModel::getInstance();
+        $admin = $business->getCurrentUser();
+        $model = new \RechargerecordsModel();
+        $model->setCreated_at(date('Y-m-d H:i:s'));
+        $model->setAdmin_id($admin->getId());
+        $model->setUpdated_at(date('Y-m-d H:i:s'));
+        $model->setUser_id($userid);
+        $model->setType($user->getType());
+        $model->setDirection(2);
+        $model->setAmount($reback);
+        $model->setShow_amount($reback);
+        $res = \Mapper\RechargerecordsModel::getInstance()->insert($model);
+        if(!$res){
+            $mapper->rollback();
+            return $this->returnData('添加充值记录失败!',21010);
+        }
+        if($user->getType() ==1){
+            $update = array(
+                'updated_at'=>date('Y-m-d H:i:s'),
+                'normal_balance'=>'normal_balance-'.$reback,
+                'show_normal_balance'=>'show_normal_balance-'.$reback,
+            );
+        }else{
+            $update = array(
+                'updated_at'=>date('Y-m-d H:i:s'),
+                'marketing_balance'=>'marketing_balance-'.$reback,
+                'show_marketing_balance'=>'show_marketing_balance-'.$reback
+            );
+        }
         $where = array('id'=>$userid);
         $res = $mapper->update($update,$where);
         if(!$res){
+            $mapper->rollback();
             return $this->returnData('回退失败，请重试!',21013);
         }
+        $mapper->commit();
         return $this->returnData('回退成功',21011,true);
     }
+
 
     /**
      * 重置密码
@@ -193,24 +244,57 @@ class UserController extends \Base\ApplicationController
         if(empty($resetPwd) || strlen($resetPwd)<6){
             return $this->returnData('密码长度至少六位',21015);
         }
-        return $this->returnData('修改成功',21016);
+        $user->setNew_password(Ku\Tool::encryption($resetPwd));
+        $user->setUpdated_at(date('Y-m-d H:i:s'));
+        $res  = $mapper->update($user);
+        if(!$res){
+            return $this->returnData('重置密码失败，请重试',21017);
+        }
+        return $this->returnData('修改成功',21016,true);
     }
 
 
+    /**
+     * 删除用户
+     * @return false
+     */
     public function delAction(){
-        $userId = $this->getParam('id',0,'int');
+        $surePwd = $this->getParam('surePwd','','string');
+        $userid = $this->getParam('userid',0,'int');
         $mapper = \Mapper\UsersModel::getInstance();
-        $user = $mapper->fetch(array('id'=>$userId,'isdel'=>0));
+        $user = $mapper->fetch(array('id'=>$userid,'isdel'=>0));
         if(!$user instanceof \UsersModel){
-            return $this->returnData('用户不存在',1000);
+            return $this->returnData('用户不存在',21020);
         }
-        $user->setIsdel(1);
-        $user->setUpdated_at(date('Y-m-d H:i:s'));
-        $res = $mapper->update($user);
-        if($res === false){
-            return $this->returnData('删除失败,请重试',1000);
+        if($surePwd != '137799'){
+            return $this->returnData('密码错误',21022);
         }
-        return $this->returnData('删除成功',1001,true);
+        $data = array('arrival_rate'=>$user->getArrival_rate());
+        return $this->returnData('删除成功',21021,true,$data);
+    }
+
+
+    /**
+     * 删除用户
+     * @return false
+     */
+    public function del2Action(){
+        $surePwd = $this->getParam('surePwd','','string');
+        $userid = $this->getParam('userid',0,'int');
+        $rate = $this->getParam('rate',0,'int');
+        $mapper = \Mapper\UsersModel::getInstance();
+        $user = $mapper->fetch(array('id'=>$userid,'isdel'=>0));
+        if(!$user instanceof \UsersModel){
+            return $this->returnData('用户不存在',21020);
+        }
+        if($surePwd != '137799'){
+            return $this->returnData('密码错误',21022);
+        }
+        $res = $mapper->update(array('arrival_rate'=>$rate),array('id'=>$userid));
+        if(!$res){
+            return $this->returnData('删除失败，请重试',21023);
+        }
+        return $this->returnData('删除成功',21021,true);
     }
 
 }
