@@ -1,3 +1,4 @@
+var unum = 0;
 (function(){
   $('input[name="sign"]').bind('input propertychange', function() { 
     var val = $(this).val();
@@ -67,6 +68,7 @@
           $('#fileName').text(res.data.filename);
           $('#totalNum').text(res.data.total);
           $('#useNum').text(res.data.true);
+          unum = res.data.true
           $('#errNum').text(res.data.repeat);
           $('#reNum').text(res.data.repeat);
           $('#auto').addClass('none');
@@ -155,4 +157,5 @@ function showLen(content) {
   $('#content').val(content);
   $('#num').text(len);
   $('#branch').text(parseInt(branch));
+  $('#use').text(parseInt(branch) * unum);
 }

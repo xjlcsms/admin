@@ -1,4 +1,27 @@
+var unum = 0; // 有效号码数
+var inputLock = false;
 (function(){
+  document.querySelector('#sign').addEventListener('compositionstart', function(){
+    inputLock = true;
+  });
+  document.querySelector('#sign').addEventListener('compositionend', function(){
+    var content = $('#content').val();
+    var end = 0;
+    var title = '';
+    if (this.value.length > 8) {
+      this.value = this.value.substring(0, 8)
+      $('#sign').val(this.value);
+    }
+
+    end = content.indexOf('】');
+    if (end > -1) {
+      content = content.substring(end + 1);
+    }
+    title = '【' + this.value + '】';
+    content = title + '' + content;
+    showLen(content);
+    inputLock = false;
+  });
   $('input[name="sign"]').bind('input propertychange', function() { 
     var val = $(this).val();
     var content = $('#content').val();
@@ -59,6 +82,7 @@
           $('#fileName').text(res.data.filename);
           $('#totalNum').text(res.data.total);
           $('#useNum').text(res.data.true);
+          unum = res.data.true;
           $('#errNum').text(res.data.repeat);
           $('#reNum').text(res.data.repeat);
           $('#auto').addClass('none');
@@ -130,4 +154,5 @@ function showLen(content) {
   $('#content').val(content);
   $('#num').text(len);
   $('#branch').text(parseInt(branch));
+  $('#use').text(parseInt(branch) * unum);
 }
