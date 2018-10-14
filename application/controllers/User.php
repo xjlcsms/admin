@@ -37,6 +37,7 @@ class UserController extends \Base\ApplicationController
         $this->assign('username',$username);
         $this->assign('name',$company);
         $this->assign('accounts',$this->_accounts);
+        $this->assign('pagelimit',$pagelimit);
     }
 
     /**
