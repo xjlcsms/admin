@@ -16,6 +16,28 @@ class UsersModel extends \Mapper\AbstractModel
 
     protected $table = 'users';
 
+    /**获取username
+     * @param $userId
+     * @return string
+     */
+    public function getUsername($userId){
+        $user = $this->findById($userId);
+        if($user instanceof \UsersModel){
+            return $user->getUsername();
+        }
+        return '';
+    }
 
+    /**获取公司名称
+     * @param $userId
+     * @return string
+     */
+    public function getName($userId){
+        $user = $this->findById($userId);
+        if($user instanceof \UsersModel){
+            return $user->getName();
+        }
+        return '';
+    }
 
 }

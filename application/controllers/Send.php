@@ -113,7 +113,7 @@ class SendController extends \Base\ApplicationController{
             $userData[$user->getId()] = $user->getUsername();
         }
         $this->assign('users',$userData);
-        $this->assign('status',$mapper->getStatus());
+        $this->assign('status',array('待发送','成功','部分失败','失败'));
     }
 
 
@@ -397,6 +397,8 @@ class SendController extends \Base\ApplicationController{
         $this->assign('taskId',$taskId);
         $this->assign('userId',$userId);
         $this->assign('mobile',$mobile);
+        $taskMapper = \Mapper\SendtasksModel::getInstance();
+        $this->assign('sendTypes', array('待发送','成功','失败'));
     }
 
 
