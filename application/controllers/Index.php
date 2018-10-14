@@ -23,7 +23,7 @@ class IndexController extends \Base\ApplicationController
         if(!$admin instanceof \AdminModel){
             return $this->returnData('请先登陆',1200,false,array('url'=>'/login'));
         }
-        if (\Ku\Tool::valid($old, $admin->getPassword(), null) === false) {
+        if (\Ku\Tool::valid($old, $admin->getNew_password(), null) === false) {
             return $this->returnData('原密码错误，请重新输入',1202);
         }
         if(strlen($new) <6){
@@ -32,7 +32,7 @@ class IndexController extends \Base\ApplicationController
         if($new != $sure){
             return $this->returnData('两次输入的密码不一致',1204);
         }
-        $admin->setPassword(\Ku\Tool::encryption($new));
+        $admin->setNew_password(\Ku\Tool::encryption($new));
         $admin->setUpdated_at(date('Y-m-d H:i:s'));
         $res = \Mapper\AdminModel::getInstance()->update($admin);
         if(!$res){
