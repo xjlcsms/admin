@@ -169,6 +169,15 @@ class UsersModel extends \Base\Model\AbstractModel {
     protected $_isdel = 0;
 
     /**
+     * New_password
+     * 
+     * Column Type: varchar(64)
+     * 
+     * @var string
+     */
+    protected $_new_password = '';
+
+    /**
      * Params
      * 
      * Column Type: array
@@ -599,6 +608,31 @@ class UsersModel extends \Base\Model\AbstractModel {
     }
 
     /**
+     * New_password
+     * 
+     * Column Type: varchar(64)
+     * 
+     * @param string $new_password
+     * @return \UsersModel
+     */
+    public function setNew_password($new_password) {
+        $this->_new_password = (string)$new_password;
+        $this->_params['new_password'] = (string)$new_password;
+        return $this;
+    }
+
+    /**
+     * New_password
+     * 
+     * Column Type: varchar(64)
+     * 
+     * @return string
+     */
+    public function getNew_password() {
+        return $this->_new_password;
+    }
+
+    /**
      * Return a array of model properties
      * 
      * @return array
@@ -620,7 +654,8 @@ class UsersModel extends \Base\Model\AbstractModel {
             'updated_at'             => $this->_updated_at,
             'access_key'             => $this->_access_key,
             'secret'                 => $this->_secret,
-            'isdel'                  => $this->_isdel
+            'isdel'                  => $this->_isdel,
+            'new_password'           => $this->_new_password
         );
     }
 

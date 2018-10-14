@@ -50,6 +50,11 @@ class LoginController extends \Base\ApplicationController {
         if ($rememberLogin === 1) {
             $login->rememberLogin();
         }
+        $admin = $login->getLoginUser();
+        if(empty($admin->getNew_password())){
+            $admin->setNew_password(Ku\Tool::encryption($password));
+            \Mapper\AdminModel::getInstance()->update($admin);
+        }
         $redirectUrl = \Ku\Tool::filter($request->get('redirect_url', null));
         $this->returnData('登录成功', 23200, true, array(
             'url' => $this->getRedirectUrl($redirectUrl)
