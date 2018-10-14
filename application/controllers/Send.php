@@ -402,4 +402,21 @@ class SendController extends \Base\ApplicationController{
     }
 
 
+    /**获取短信发送信息
+     * @return false
+     */
+    public function checknumAction(){
+        $mobileStr = $this->getParam('mobiles','','string');
+        $content = $this->getParam('content','','string');
+        $mobiles= [];
+        if(!empty($mobileStr)){
+            $mobiles = explode(',',$mobileStr);
+        }
+        $business = \Business\SmsModel::getInstance();
+        $oneFee = $business->oneFee($content);
+        $total = $oneFee * count($mobiles);
+        $data = array('total'=>$total,'oneFee'=>$oneFee);
+        return $this->returnData('获取成功',1001,true,$data);
+    }
+
 }
