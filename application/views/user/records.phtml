@@ -78,8 +78,8 @@
                     <?php foreach ($this->pager->getList() as $key=>$value):?>
                     <tbody>
                       <tr>
-                        <td><?php //echo $mapper->getUsername($value['user_id']);?></td>
-                        <td><?php //echo $this->acounts[$value['type']]?></td>
+                        <td><?php echo $mapper->getUsername($value['user_id']);?></td>
+                        <td><?php echo $this->acounts[$value['type']]?></td>
                         <td><?php echo $this->actions[$value['direction']]?></td>
                         <td><?php echo $value['show_amount'];?></td>
                         <td><?php echo $value['created_at'];?></td>
